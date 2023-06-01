@@ -3,11 +3,50 @@
 <head>
   <title>Upload Files</title>
 </head>
+<style>
+  #loading-container {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+</style>
 <body>
+  <div id="loading-container">
+    <div class="loader"></div>
+    <p>Loading...</p>
+  </div>
   <h1>Upload Files</h1>
 
   <!-- แบบหลายไฟล์ -->
-  <form action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+  <!-- <form action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+    <label for="multiFiles">เลือกไฟล์ภาพหลายรูป:</label>
+    <input type="file" id="multiFiles" name="images" multiple>
+    <br>
+    <button onclick="window.location.reload()" type="submit">อัปโหลด</button>
+  </form> -->
+  <form id="uploadForm" enctype="multipart/form-data">
     <label for="multiFiles">เลือกไฟล์ภาพหลายรูป:</label>
     <input type="file" id="multiFiles" name="images" multiple>
     <br>
@@ -15,3 +54,45 @@
   </form>
 </body>
 </html>
+
+
+
+<script>
+  // Get a reference to the form element
+  const form = document.getElementById('uploadForm');
+
+  // Add a submit event listener to the form
+  form.addEventListener('submit', (event) => {
+    showLoading()
+    event.preventDefault(); // Prevent the default form submission
+
+    // Create a new FormData object and append the form data
+    const formData = new FormData(form);
+
+    // Send the form data using Fetch API
+    fetch('http://172.17.0.209:8080/upload', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => {
+      // Handle the response from the server
+      // You can check the response status and perform appropriate actions
+      hideLoading()
+      alert('บันทึกไฟล์สำเร็จ')
+      window.location.reload()
+    })
+    .catch(error => {
+      // Handle any error that occurred during the request
+      hideLoading()
+      console.error('Error:', error);
+    });
+  });
+  function showLoading() {
+  document.getElementById('loading-container').style.display = 'flex';
+}
+
+function hideLoading() {
+  document.getElementById('loading-container').style.display = 'none';
+}
+</script>
+

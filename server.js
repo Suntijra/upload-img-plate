@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
-
+const cors = require('cors');
 const app = express();
-
+app.use(express.static('public'));
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'uploads/');
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     cb(null, filename);
   }
 });
-
+app.use(cors());
 const imageFilter = function (req, file, cb) {
   if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
     return cb(new Error('รองรับเฉพาะไฟล์ภาพเท่านั้น!'), false);
@@ -45,6 +45,6 @@ app.post('/upload', function (req, res, next) {
   });
 });
 
-app.listen(3000, function () {
-  console.log('เซิร์ฟเวอร์เริ่มต้นที่พอร์ต 3000');
+app.listen(8080, function () {
+  console.log('เซิร์ฟเวอร์เริ่มต้นที่พอร์ต 8080');
 });
