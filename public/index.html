@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Files</title>
+</head>
+<body>
+  <h1>Upload Files</h1>
+
+  <!-- แบบหลายไฟล์ -->
+  <form action="http://localhost:3000/upload" method="POST" enctype="multipart/form-data">
+    <label for="multiFiles">เลือกไฟล์ภาพหลายรูป:</label>
+    <input type="file" id="multiFiles" name="images" multiple>
+    <br>
+    <button type="submit">อัปโหลด</button>
+  </form>
+</body>
+</html>
